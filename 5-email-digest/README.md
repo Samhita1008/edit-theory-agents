@@ -14,5 +14,8 @@ Triages your inbox every morning before you open Gmail — categorizes each emai
 ## Stack
 n8n · Groq (Llama 3.3 70B) · Gmail · Telegram
 
+## File
+`workflow.json` — full n8n export, import directly into your own n8n instance to inspect or run.
+
 ## Note
-Full workflow file available on request. Contact samhitatavutu@gmail.com or book a call: https://topmate.io/samhita_tavutu
+API credentials are referenced by n8n credential ID, not hardcoded — you'll need to connect your own Gmail, Groq, and Telegram credentials after importing.
