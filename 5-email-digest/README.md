@@ -17,5 +17,14 @@ n8n · Groq (Llama 3.3 70B) · Gmail · Telegram
 ## File
 `workflow.json` — full n8n export, import directly into your own n8n instance to inspect or run.
 
-## Note
-API credentials are referenced by n8n credential ID, not hardcoded — you'll need to connect your own Gmail, Groq, and Telegram credentials after importing.
+## Engineering Notes
+
+**Sender/subject data silently dropped after the HTTP Request node.** n8n's HTTP Request node replaces `item.json` with the raw API response, discarding the original Gmail fields (`From`, `Subject`) that came in. First fix attempt (indexing back into the original Gmail items by array position `[i]`) broke once the AI responses came back in a different order than the input — sender names ended up paired with the wrong email. Real fix: rebuilt the AI call as a single Code node with a `for` loop, calling the API directly via `this.helpers.httpRequest()` inside the same iteration as the original item — guarantees correct pairing since there's no separate node boundary for order to get lost across.
+
+**Gmail field capitalization.** The Gmail node returns `From` and `Subject` capitalized — a lowercase `from` filter silently matched nothing and let all emails through unfiltered, with no error thrown. Caught by inspecting one raw output item directly rather than trusting the filter "ran successfully."
+
+**JSON body field rejecting a valid expression.** The HTTP Request node's body needs "Specify Body" explicitly set to "Using JSON" (not "Using Fields Below") before an expression-mode `JSON.stringify(...)` body will actually evaluate — otherwise n8n validates the literal unrendered text and rejects it as invalid JSON.
+
+## Contact
+- Email: samhitatavutu@gmail.com
+- Topmate: https://topmate.io/samhita_tavutu
