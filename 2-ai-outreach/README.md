@@ -20,4 +20,4 @@ Real problems hit while building this, not just the happy path:
 - **"No matches" looked like a bug — it wasn't.** Burned a full debugging cycle checking the Gmail data, the sheet data, and the matching regex, all of which were correct. The actual issue: no real lead had replied yet, so there was nothing to match against. Lesson — confirm test data actually exists before assuming the matching logic is broken.
 
 ## Note
-AI prompts and API credentials redacted from `workflow.json` for IP protection — same pattern as Agent 4. Full workflow file available on request. Contact samhitatavutu@gmail.com or book a call: https://topmate.io/samhita_tavutu
+Workflow file not published in this repo (IP protection — same pattern as Agent 4). Available on request. Contact samhitatavutu@gmail.com or book a call: https://topmate.io/samhita_tavutu
