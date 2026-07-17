@@ -11,6 +11,9 @@ Triages your inbox every morning before you open Gmail — categorizes each emai
 - Writes a one-line summary per email, not the full thread
 - Sends one sorted, formatted digest to Telegram every morning
 
+## Pipeline
+Gmail (last 24h) → Noise Filter (strip newsletters/promo) → Groq (categorize + one-line summary) → Telegram (digest)
+
 ## Stack
 n8n · Groq (Llama 3.3 70B) · Gmail · Telegram
 
@@ -24,6 +27,10 @@ n8n · Groq (Llama 3.3 70B) · Gmail · Telegram
 **Gmail field capitalization.** The Gmail node returns `From` and `Subject` capitalized — a lowercase `from` filter silently matched nothing and let all emails through unfiltered, with no error thrown. Caught by inspecting one raw output item directly rather than trusting the filter "ran successfully."
 
 **JSON body field rejecting a valid expression.** The HTTP Request node's body needs "Specify Body" explicitly set to "Using JSON" (not "Using Fields Below") before an expression-mode `JSON.stringify(...)` body will actually evaluate — otherwise n8n validates the literal unrendered text and rejects it as invalid JSON.
+
+
+## Why I built this
+Opening Gmail and triaging everything manually every morning is dead time. Built this to do the sorting before I even open the inbox — filter the noise, categorize by urgency, summarize in one line — so opening Telegram tells me what actually needs attention today.
 
 ## Contact
 - Email: samhitatavutu@gmail.com
