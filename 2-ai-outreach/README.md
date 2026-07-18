@@ -28,5 +28,5 @@ Real problems hit while building this, not just the happy path:
 ## Why I built this
 Cold outreach dies without consistent follow-up, and manually tracking who replied across dozens of leads doesn't scale. Built this to run the full loop, personalized first touch, a scheduled follow-up cadence that respects replies, and automatic reply tracking, without babysitting a spreadsheet every day.
 
-## Note
-Workflow file not published in this repo (IP protection, same pattern as Agent 4). Available on request. Contact samhitatavutu@gmail.com
+## Access
+Full n8n workflow export is not published in this repo to protect the underlying prompt engineering and implementation logic. Available on request for serious inquiries, see contact below.
