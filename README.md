@@ -3,7 +3,6 @@
 n8n workflow files for the AI automation agents built as part of **Edit Theory**, an AI automation practice for D2C brands, by [Samhita Tavutu](mailto:samhitatavutu@gmail.com).
 
 **Portfolio site:** https://edittheory-portfolio.vercel.app/
-**Book a call:** https://topmate.io/samhita_tavutu
 
 ---
 
@@ -32,5 +31,4 @@ Full n8n workflow exports are not published in this repo to protect the underlyi
 ## Contact
 
 - Email: samhitatavutu@gmail.com
-- Topmate: https://topmate.io/samhita_tavutu
 - LinkedIn: https://linkedin.com/in/samhita-tavutu-b17b2a37b/

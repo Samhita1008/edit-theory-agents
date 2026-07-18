@@ -39,4 +39,4 @@ Real problems hit while building this, not just the happy path:
 - **Webhook validation added up front.** A `Validate Input` code node checks required fields exist before any API call fires, so a malformed or incomplete trigger doesn't burn Apify/Groq calls for nothing.
 
 ## Note
-Workflow file not published in this repo (IP protection — same pattern as Agents 2 and 4). Available on request. Contact samhitatavutu@gmail.com or book a call: https://topmate.io/samhita_tavutu
+Workflow file not published in this repo (IP protection — same pattern as Agents 2 and 4). Available on request. Contact samhitatavutu@gmail.com

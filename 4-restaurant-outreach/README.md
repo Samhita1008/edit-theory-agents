@@ -32,4 +32,4 @@ Real problems hit while building this, not just the happy path:
 Generic cold emails to local businesses get ignored. Built this to ground every pitch in something real and specific — an actual audit of the restaurant's own website — so outreach reads like it was written by someone who looked, not a template. Kept a human-review step before sending, since local business outreach is relationship-sensitive in a way D2C isn't.
 
 ## Note
-Full workflow file available on request. Contact samhitatavutu@gmail.com or book a call: https://topmate.io/samhita_tavutu
+Full workflow file available on request. Contact samhitatavutu@gmail.com

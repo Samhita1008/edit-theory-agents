@@ -42,5 +42,4 @@ Repurposing one video into 10 platform-specific assets by hand is the exact kind
 
 ## Contact
 - Email: samhitatavutu@gmail.com
-- Topmate: https://topmate.io/samhita_tavutu
 

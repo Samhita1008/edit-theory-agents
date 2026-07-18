@@ -34,4 +34,3 @@ Opening Gmail and triaging everything manually every morning is dead time. Built
 
 ## Contact
 - Email: samhitatavutu@gmail.com
-- Topmate: https://topmate.io/samhita_tavutu

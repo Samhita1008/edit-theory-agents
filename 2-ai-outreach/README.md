@@ -29,4 +29,4 @@ Real problems hit while building this, not just the happy path:
 Cold outreach dies without consistent follow-up, and manually tracking who replied across dozens of leads doesn't scale. Built this to run the full loop — personalized first touch, a scheduled follow-up cadence that respects replies, and automatic reply tracking — without babysitting a spreadsheet every day.
 
 ## Note
-Workflow file not published in this repo (IP protection — same pattern as Agent 4). Available on request. Contact samhitatavutu@gmail.com or book a call: https://topmate.io/samhita_tavutu
+Workflow file not published in this repo (IP protection — same pattern as Agent 4). Available on request. Contact samhitatavutu@gmail.com
