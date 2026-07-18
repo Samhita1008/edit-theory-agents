@@ -13,7 +13,7 @@ n8n workflow files for the AI automation agents built as part of **Edit Theory**
 |---|---|---|---|
 | 1 | [Content Repurposing System](./1-content-repurposing) | ✅ Live workflow | n8n, Groq, Supadata, Notion |
 | 2 | [AI Outreach System](./2-ai-outreach) | ✅ Live workflow | n8n, Groq, Gmail, Google Sheets |
-| 3 | [Lead Discovery System](./3-lead-scraper) | 🔄 Rebuild in progress | n8n, Apify, Google Sheets |
+| 3 | [Lead Discovery System](./3-lead-scraper) | ✅ Live workflow | n8n, Groq, Apify, Google Sheets |
 | 4 | [Restaurant Outreach AI System](./4-restaurant-outreach) | ✅ Live workflow | n8n, Groq, Gmail, Google Sheets, Telegram |
 | 5 | [Email Digest Agent](./5-email-digest) | ✅ Live workflow | n8n, Groq, Gmail, Telegram |
 
