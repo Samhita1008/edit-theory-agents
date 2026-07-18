@@ -38,5 +38,5 @@ Real problems hit while building this, not just the happy path:
 - **Follower filtering moved before AI enrichment.** Originally every scraped lead went through Groq scoring regardless of follower count. Moved the follower filter earlier in the pipeline so leads that don't qualify never reach Groq, cuts API usage and matters on Apify's free-tier credit limits, which required testing carefully and avoiding unnecessary reruns.
 - **Webhook validation added up front.** A `Validate Input` code node checks required fields exist before any API call fires, so a malformed or incomplete trigger doesn't burn Apify/Groq calls for nothing.
 
-## Note
-Workflow file not published in this repo (IP protection, same pattern as Agents 2 and 4). Available on request. Contact samhitatavutu@gmail.com
+## Access
+Full n8n workflow export is not published in this repo to protect the underlying prompt engineering and implementation logic. Available on request for serious inquiries, see contact below.
