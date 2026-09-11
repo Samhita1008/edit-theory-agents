@@ -10,11 +10,14 @@ n8n workflow files for the AI automation agents built as part of **Edit Theory**
 
 | # | Agent | Status | Stack |
 |---|---|---|---|
+| 6 | [Edit Theory Concierge](./6-edit-theory-concierge) ⭐ | 🟡 Demo mode | React, Tailwind, n8n, Groq, OpenStreetMap, Google Sheets, Gmail |
 | 1 | [Content Repurposing System](./1-content-repurposing) | ✅ Live workflow | n8n, Groq, Supadata, Notion |
 | 2 | [AI Outreach System](./2-ai-outreach) | ✅ Live workflow | n8n, Groq, Gmail, Google Sheets |
 | 3 | [Lead Discovery System](./3-lead-scraper) | ✅ Live workflow | n8n, Groq, Apify, Google Sheets |
 | 4 | [Restaurant Outreach AI System](./4-restaurant-outreach) | ✅ Live workflow | n8n, Groq, Gmail, Google Sheets, Telegram |
 | 5 | [Email Digest Agent](./5-email-digest) | ✅ Live workflow | n8n, Groq, Gmail, Telegram |
+
+**Concierge** is the flagship build here, a full-stack (frontend + backend) customer-facing booking product, not an internal automation. See its README for the architecture and what's live vs. demo-mode.
 
 Each folder contains a README describing what the agent does and its stack. Full workflow files are available on request, this keeps the underlying implementation (prompts and code) protected while still demonstrating what was built.
 
