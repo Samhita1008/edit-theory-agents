@@ -10,7 +10,7 @@ n8n workflow files for the AI automation agents built as part of **Edit Theory**
 
 | # | Agent | Status | Stack |
 |---|---|---|---|
-| 6 | [Edit Theory Concierge](./6-edit-theory-concierge) ⭐ | 🟡 Demo mode | React, Tailwind, n8n, Groq, OpenStreetMap, Google Sheets, Gmail |
+| 6 | [Edit Theory Concierge](./6-edit-theory-concierge) ⭐ | 🟡 Demo mode | React, Tailwind, n8n, Groq, OpenStreetMap, GooglePlaces, Whatsapp Buisness Integration, Google Sheets, Gmail |
 | 1 | [Content Repurposing System](./1-content-repurposing) | ✅ Live workflow | n8n, Groq, Supadata, Notion |
 | 2 | [AI Outreach System](./2-ai-outreach) | ✅ Live workflow | n8n, Groq, Gmail, Google Sheets |
 | 3 | [Lead Discovery System](./3-lead-scraper) | ✅ Live workflow | n8n, Groq, Apify, Google Sheets |
