@@ -35,3 +35,9 @@ Full n8n workflow exports are not published in this repo to protect the underlyi
 
 - Email: samhitatavutu@gmail.com
 - LinkedIn: https://linkedin.com/in/samhita-tavutu-b17b2a37b/
+
+---
+
+<div align="center">
+Built by <a href="https://github.com/Samhita1008">Samhita</a>, founder of Edit Theory
+</div>
