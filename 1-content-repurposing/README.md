@@ -26,7 +26,7 @@ YouTube URL → Webhook Trigger → Supadata (transcript fetch) → Groq (10-ass
 n8n · Groq (Llama 3.3 70B) · Supadata (transcript extraction) · Notion · Railway (deployment)
 
 ## Access
-Full n8n workflow export is not published in this repo to protect the underlying prompt engineering and implementation logic. Available on request for serious inquiries, see contact below.
+Full n8n workflow export is published in this repo — see [`workflow.json`](./workflow.json). Credentials and API keys are redacted; replace the placeholder values with your own before importing.
 
 ## Engineering Notes
 

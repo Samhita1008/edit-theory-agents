@@ -1,0 +1,144 @@
+{
+  "name": "Content Repurposing Agent 1",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content-repurpose",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "id": "bb7cddfb-f214-497d-9108-4fb56b612385",
+      "name": "Webhook",
+      "webhookId": "cf92588a-9d00-4813-ac39-09254212d2e6"
+    },
+    {
+      "parameters": {
+        "url": "https://api.supadata.ai/v1/youtube/transcript",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.body.youtube_url }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "YOUR_SUPADATA_API_KEY"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [208, 0],
+      "id": "d75ba942-7798-4676-b6ed-65d49b19721e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "const segments = items[0].json.content;\nconst fullText = segments.map(seg => seg.text).join(' ');\n\n// Cap to ~12000 characters (~3000 tokens) to keep Groq happy\nconst trimmed = fullText.length > 12000 ? fullText.slice(0, 12000) + '...' : fullText;\n\nreturn [{ json: { transcript: trimmed } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [416, 0],
+      "id": "97a2e8c4-c59b-48de-82fe-388cffffdb4b",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_GROQ_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  model: \"llama-3.3-70b-versatile\",\n  messages: [\n    {\n      role: \"system\",\n      content: \"You are a content repurposing assistant. Given a podcast/video transcript, generate 10 content assets and return ONLY valid JSON, no markdown fences, no preamble. Format: {\\\"carousel_slides\\\": \\\"5-slide LinkedIn carousel outline, one line per slide\\\", \\\"reel_script_1\\\": \\\"15-30 second reel script, hook + payoff\\\", \\\"reel_script_2\\\": \\\"different angle reel script\\\", \\\"reel_script_3\\\": \\\"different angle reel script\\\", \\\"linkedin_post\\\": \\\"full LinkedIn post, 150-200 words\\\", \\\"newsletter\\\": \\\"email newsletter version, 200-250 words\\\", \\\"quote_post\\\": \\\"one powerful standalone quote from the content\\\", \\\"instagram_caption\\\": \\\"IG caption with line breaks and emoji, under 150 words\\\", \\\"x_thread\\\": \\\"5-tweet thread, numbered\\\", \\\"ad_concept\\\": \\\"one ad concept: hook + angle + CTA\\\"}\"\n    },\n    {\n      role: \"user\",\n      content: \"Transcript: \" + $json.transcript\n    }\n  ],\n  temperature: 0.4\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [624, 0],
+      "id": "31d49061-1e33-4ea2-bfb2-19544cafa2fd",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map((item) => {\n  const raw = item.json.choices[0].message.content;\n  const clean = raw.replace(/```json|```/g, '').trim();\n  const parsed = JSON.parse(clean);\n\n  return {\n    json: {\n      carousel_slides: parsed.carousel_slides,\n      reel_script_1: parsed.reel_script_1,\n      reel_script_2: parsed.reel_script_2,\n      reel_script_3: parsed.reel_script_3,\n      linkedin_post: parsed.linkedin_post,\n      newsletter: parsed.newsletter,\n      quote_post: parsed.quote_post,\n      instagram_caption: parsed.instagram_caption,\n      x_thread: parsed.x_thread,\n      ad_concept: parsed.ad_concept\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [832, 0],
+      "id": "57fb8384-8715-41db-9036-6f85e09ab5dd",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "YOUR_NOTION_DATABASE_ID",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            { "key": "Carousals|rich_text", "textContent": "={{ $json.carousel_slides }}" },
+            { "key": "Reelscript 1|rich_text", "textContent": "={{ $json.reel_script_1 }}" },
+            { "key": "Reelscript 2|rich_text", "textContent": "={{ $json.reel_script_2 }}" },
+            { "key": "Reelscript 3|rich_text", "textContent": "={{ $json.reel_script_3 }}" },
+            { "key": "LinkedIn Post|rich_text", "textContent": "={{ $json.linkedin_post }}" },
+            { "key": "Newsletter|rich_text", "textContent": "={{ $json.newsletter }}" },
+            { "key": "Quote Post|rich_text", "textContent": "={{ $json.quote_post }}" },
+            { "key": "Instagram Caption|rich_text", "textContent": "={{ $json.instagram_caption }}" },
+            { "key": "X Thread|rich_text", "textContent": "={{ $json.x_thread }}" },
+            { "key": "Ad Concept|rich_text", "textContent": "={{ $json.ad_concept }}" },
+            { "key": "Title|title", "title": "={{ $('Webhook').item.json.body.youtube_url }}" }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [1040, 0],
+      "id": "d12053aa-cb37-4dd4-a3a7-1fd6c9f4b4fc",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Notion account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": { "main": [[{ "node": "HTTP Request", "type": "main", "index": 0 }]] },
+    "HTTP Request": { "main": [[{ "node": "Code in JavaScript", "type": "main", "index": 0 }]] },
+    "Code in JavaScript": { "main": [[{ "node": "HTTP Request1", "type": "main", "index": 0 }]] },
+    "HTTP Request1": { "main": [[{ "node": "Code in JavaScript1", "type": "main", "index": 0 }]] },
+    "Code in JavaScript1": { "main": [[{ "node": "Create a database page", "type": "main", "index": 0 }]] }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "nodeGroups": [],
+  "tags": []
+}

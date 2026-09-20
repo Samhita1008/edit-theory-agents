@@ -39,4 +39,4 @@ Real problems hit while building this, not just the happy path:
 - **Webhook validation added up front.** A `Validate Input` code node checks required fields exist before any API call fires, so a malformed or incomplete trigger doesn't burn Apify/Groq calls for nothing.
 
 ## Access
-Full n8n workflow export is not published in this repo to protect the underlying prompt engineering and implementation logic. Available on request for serious inquiries, see contact below.
+Full n8n workflow export is published in this repo — see [`workflow.json`](./workflow.json). Credentials and API keys are redacted; replace the placeholder values with your own before importing.

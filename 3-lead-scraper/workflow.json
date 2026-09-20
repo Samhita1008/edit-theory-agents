@@ -1,0 +1,621 @@
+{
+  "name": "Lead Scrapper 3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "scrape-leads",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7b6a1106-17f4-424c-a6a1-0d624dff2945",
+      "name": "Webhook",
+      "webhookId": "de7e5f0d-62dd-43d1-881b-b70a3c599865"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        976,
+        -80
+      ],
+      "id": "d9209098-417d-496d-9bf6-f83c67776118",
+      "name": "Wait",
+      "webhookId": "6a6f55ed-b154-4b9e-9899-d102672b5147"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body;\n\nif (!body.niche)\n    throw new Error(\"Missing niche\");\n\nif (!body.min_followers)\n    throw new Error(\"Missing min_followers\");\n\nif (!body.max_followers)\n    throw new Error(\"Missing max_followers\");\n\nreturn [{\n    json:{\n        niche: body.niche,\n        min_followers: body.min_followers,\n        max_followers: body.max_followers\n    }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        176,
+        -64
+      ],
+      "id": "4bc352e8-82cc-49db-b735-fc3f93fadcd4",
+      "name": "Validate Input"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_GROQ_API_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\":\"llama-3.3-70b-versatile\",\n  \"messages\":[\n    {\n      \"role\":\"system\",\n      \"content\":\"You are an Instagram marketing expert. Return ONLY valid JSON.\"\n    },\n    {\n      \"role\":\"user\",\n      \"content\":\"Generate exactly 5 Instagram hashtags related to {{$json.niche}}. Return JSON like {\\\"hashtags\\\":[\\\"skincare\\\",\\\"glassskin\\\",\\\"beauty\\\"]}. Do not include #.\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        320,
+        32
+      ],
+      "id": "351e7976-5ab0-40cc-b1ac-c6bf50d9eb47",
+      "name": "Generate Hashtags"
+    },
+    {
+      "parameters": {
+        "jsCode": "let text = $json.choices[0].message.content;\n\ntext = text\n.replace(/```json/g,'')\n.replace(/```/g,'')\n.trim();\n\nconst hashtags = JSON.parse(text);\n\nreturn hashtags.hashtags.map(tag=>({\n    json:{\n        hashtag:tag\n    }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        -112
+      ],
+      "id": "37de6eb7-7538-4dc8-8dca-f80ea6dd7087",
+      "name": "Parse Hashtags"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/apify~instagram-hashtag-scraper/runs?token=YOUR_APIFY_TOKEN",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"hashtags\": [\n    \"={{$json.hashtag.replace('#','')}}\"\n  ],\n  \"resultsLimit\": 25\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        640,
+        -48
+      ],
+      "id": "587c1a5c-ef6e-4583-bfbe-b5d6d742c7bf",
+      "name": "Scrape Instagram",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    hashtag: $('Parse Hashtags').item.json.hashtag,\n    defaultDatasetId: $json.data.defaultDatasetId,\n    runId: $json.data.id\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        48
+      ],
+      "id": "e4dc42d6-ffa2-445c-b1fc-5e7ca0b54468",
+      "name": "Extract Dataset ID"
+    },
+    {
+      "parameters": {
+        "url": "==https://api.apify.com/v2/datasets/{{$('Extract Dataset ID').item.json.defaultDatasetId}}/items?clean=true",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1200,
+        -208
+      ],
+      "id": "11cb56e5-f4a1-4381-841d-f9b93db65ff2",
+      "name": "Get Results"
+    },
+    {
+      "parameters": {
+        "jsCode": "const post = $json;\n\nreturn [{\n    json: {\n\n        username: post.ownerUsername,\n\n        name: post.ownerFullName ||\n\n              post.ownerUsername,\n\n        followers:\n\n            post.ownerFollowers ||\n\n            0,\n\n        profile:\n\n            \"https://instagram.com/\" +\n\n            post.ownerUsername,\n\n        topic:\n\n            post.caption ||\n\n            \"\",\n\n        platform:\n\n            \"Instagram\"\n    }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        64
+      ],
+      "id": "da9a0de6-e173-460c-b351-fb82b4a67d89",
+      "name": "Format Lead"
+    },
+    {
+      "parameters": {
+        "jsCode": "const seen = new Set();\nconst unique = [];\n\nfor (const item of $input.all()) {\n\n    const username = item.json.username;\n\n    if (seen.has(username))\n\n        continue;\n\n    seen.add(username);\n\n    unique.push(item);\n}\n\nreturn unique;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1536,
+        -144
+      ],
+      "id": "648c995f-9a2b-470c-a8c3-0b57897b329d",
+      "name": "Deduplicate Leads"
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $('Validate Input').first().json;\n\nconst min = config.min_followers;\nconst max = config.max_followers;\n\nreturn $input.all().filter(item => {\n\n    const followers = item.json.followers;\n\n    return followers >= min &&\n           followers <= max;\n\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1712,
+        48
+      ],
+      "id": "95c8e445-98ce-4ac0-b280-65829953ed40",
+      "name": "Filter Followers"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_GROQ_API_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Return ONLY valid JSON. No markdown. No backticks.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Analyze this Instagram creator.\\n\\nName: {{$json.name}}\\nUsername: {{$json.username}}\\nFollowers: {{$json.followers}}\\nRecent Post: {{$json.topic}}\\n\\nReturn JSON:\\n{\\n\\\"score\\\":8,\\n\\\"language\\\":\\\"English\\\",\\n\\\"reason\\\":\\\"short reason\\\"\\n}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1744,
+        288
+      ],
+      "id": "c39230bd-4bac-40f8-ac6b-80d1a1c1e647",
+      "name": "Score the Lead + Detect Language (Groq)"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\":\"llama-3.3-70b-versatile\",\n  \"messages\":[\n    {\n      \"role\":\"system\",\n      \"content\":\"Return ONLY JSON.\"\n    },\n    {\n      \"role\":\"user\",\n      \"content\":\"You work for [Your Brand], a D2C skincare brand.\\n\\nLead Information:\\n\\nName: {{$json.name}}\\nUsername: {{$json.username}}\\nFollowers: {{$json.followers}}\\nRecent Post: {{$json.topic}}\\nLanguage: {{$json.language}}\\nLead Score: {{$json.score}}\\n\\nGenerate:\\n1. A friendly personalized opener.\\n2. A professional cold email.\\n\\nReturn:\\n{\\n\\\"opener\\\":\\\"...\\\",\\n\\\"email\\\":\\\"...\\\"\\n}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2224,
+        -128
+      ],
+      "id": "ec8ede2c-51c2-4f1a-910c-ca6e73194ea4",
+      "name": "Generate Personalized Opener + Cold Email"
+    },
+    {
+      "parameters": {
+        "jsCode": "let text = $json.choices[0].message.content;\n\ntext = text\n.replace(/```json/g, '')\n.replace(/```/g, '')\n.trim();\n\nconst ai = JSON.parse(text);\n\nreturn [{\n  json: {\n    ...$('Filter Followers').item.json,\n    score: ai.score,\n    language: ai.language,\n    reason: ai.reason\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2032,
+        0
+      ],
+      "id": "c29f80bb-0f2c-49fa-be6c-4e3381bc483d",
+      "name": "Parse Groq Response"
+    },
+    {
+      "parameters": {
+        "jsCode": "let text = $json.choices[0].message.content;\n\ntext = text\n.replace(/```json/g, \"\")\n.replace(/```/g, \"\")\n.trim();\n\nconst result = JSON.parse(text);\n\n// Get data from the node BEFORE Generate Email.\n// Replace the node name below if yours is different.\n\nconst lead = $('Parse Groq Response').first().json;\n\nreturn [{\n  json: {\n\n    name: lead.name,\n\n    platform: lead.platform,\n\n    niche: $('Validate Input').first().json.niche,\n\n    profile: lead.profile,\n\n    topic: lead.topic,\n\n    score: lead.score,\n\n    language: lead.language,\n\n    opener: result.opener,\n\n    coldEmail: result.email\n\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        16
+      ],
+      "id": "97e78aa1-b6f2-4900-acf5-4ba5dcadb6ba",
+      "name": "Parse Email JSON"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Edit Theory - Lead Pipeline",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{$json.name}}",
+            "Platform": "={{$json.platform}}",
+            "Niche": "={{$('Validate Input').first().json.niche}}",
+            "Profile URL": "={{$json.profile}}",
+            "Recent post topic": "={{$json.topic}}",
+            "Generated Opener": "={{$json.opener}}",
+            "Full Cold Email": "={{$json.coldEmail}}",
+            "Status": "New",
+            "Lead Score": "={{$json.score}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Platform",
+              "displayName": "Platform",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Niche",
+              "displayName": "Niche",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Profile URL",
+              "displayName": "Profile URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Recent post topic",
+              "displayName": "Recent post topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Generated Opener",
+              "displayName": "Generated Opener",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Full Cold Email",
+              "displayName": "Full Cold Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date Sent",
+              "displayName": "Date Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Lead Score",
+              "displayName": "Lead Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2624,
+        -176
+      ],
+      "id": "fb1a0869-139b-4ade-b0f4-21a3fd6d9b8c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Lead scraping completed successfully\",\n  \"totalLeads\": {{$items().length}}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2800,
+        0
+      ],
+      "id": "b9303864-b66b-494d-a6b1-5599a3102b85",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Generate Hashtags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Hashtags": {
+      "main": [
+        [
+          {
+            "node": "Parse Hashtags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Hashtags": {
+      "main": [
+        [
+          {
+            "node": "Scrape Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Instagram": {
+      "main": [
+        [
+          {
+            "node": "Extract Dataset ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Dataset ID": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Results": {
+      "main": [
+        [
+          {
+            "node": "Format Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Lead": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicate Leads": {
+      "main": [
+        [
+          {
+            "node": "Filter Followers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Followers": {
+      "main": [
+        [
+          {
+            "node": "Score the Lead + Detect Language (Groq)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score the Lead + Detect Language (Groq)": {
+      "main": [
+        [
+          {
+            "node": "Parse Groq Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Groq Response": {
+      "main": [
+        [
+          {
+            "node": "Generate Personalized Opener + Cold Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Personalized Opener + Cold Email": {
+      "main": [
+        [
+          {
+            "node": "Parse Email JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Email JSON": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "0caa33bc-dc7c-4647-ad32-4addab1911d0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6512bc55ec4a656c60bd19299f2bc14900d2b3d09d156ac46be847d72c78e0c4"
+  },
+  "nodeGroups": [],
+  "id": "WS9ZVxJTJTqzJTjJ",
+  "tags": []
+}
