@@ -1,8 +1,8 @@
 # Edit Theory, Automation Agents
 
-n8n workflow files for the AI automation agents built as part of **Edit Theory**, an AI automation practice for D2C brands, by [Samhita Tavutu](mailto:samhitatavutu@gmail.com).
+n8n workflow files for the AI automation agents built as part of **Edit Theory**, an AI automation practice for D2C brands and local businesses, by [Samhita Tavutu](mailto:samhitatavutu@gmail.com).
 
-**[Portfolio link](https://edittheory-portfolio.vercel.app/)**
+**[Portfolio](https://edittheory-portfolio.vercel.app/)** · **[Concierge — Live Demo](https://edit-theory-concierge-s6ra.vercel.app)** · **[LinkedIn](https://linkedin.com/in/samhita-tavutu-b17b2a37b/)**
 
 ---
 
@@ -10,7 +10,7 @@ n8n workflow files for the AI automation agents built as part of **Edit Theory**
 
 | # | Agent | Status | Stack |
 |---|---|---|---|
-| 6 | [Edit Theory Concierge](./6-edit-theory-concierge) ⭐ | 🟡 Demo mode | React, Tailwind, n8n, Groq, OpenStreetMap, GooglePlaces, Whatsapp Buisness Integration, Google Sheets, Gmail |
+| 6 | [Edit Theory Concierge](./6-edit-theory-concierge) ⭐ | 🟡 Demo mode | React, Tailwind, n8n, Groq, OpenStreetMap → Google Places (swap-ready), WhatsApp Business (swap-ready), Google Sheets, Gmail |
 | 1 | [Content Repurposing System](./1-content-repurposing) | ✅ Live workflow | n8n, Groq, Supadata, Notion |
 | 2 | [AI Outreach System](./2-ai-outreach) | ✅ Live workflow | n8n, Groq, Gmail, Google Sheets |
 | 3 | [Lead Discovery System](./3-lead-scraper) | ✅ Live workflow | n8n, Groq, Apify, Google Sheets |
