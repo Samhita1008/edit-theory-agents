@@ -1,6 +1,8 @@
-# Edit Theory Concierge
+# Edit Theory Concierge — Backend
 
 Status: 🟡 Demo mode (architecture production-ready, two integrations pending real credentials)
+
+The frontend lives in its own repo: **[edit-theory-concierge](https://github.com/Samhita1008/edit-theory-concierge)**. This document covers the n8n backend, pipeline, and engineering notes.
 
 A universal booking assistant for local businesses, restaurants, gyms, salons, parlours, travel agencies, that finds a venue, takes a booking, and follows up automatically. Full-stack build: React/Tailwind frontend, n8n backend, Google Sheets as the system of record.
 
