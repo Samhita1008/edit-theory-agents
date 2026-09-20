@@ -39,5 +39,5 @@ Full n8n workflow exports are not published in this repo to protect the underlyi
 ---
 
 <div align="center">
-Built by <a href="https://github.com/Samhita1008">Samhita</a>, founder of Edit Theory
+Samhita — Edit Theory
 </div>
