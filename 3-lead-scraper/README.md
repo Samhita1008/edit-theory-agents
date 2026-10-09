@@ -53,3 +53,7 @@ Apify's free tier has limited credits, so test with small follower ranges and av
 ## Why I built this
 
 Searching Instagram by hashtag and pasting profiles into a sheet doesn't scale past a handful of leads. I built this to turn one niche into a scored, ready-to-contact lead list, feeding straight into the outreach system with no manual handoff.
+
+---
+
+Samhita - Edit Theory

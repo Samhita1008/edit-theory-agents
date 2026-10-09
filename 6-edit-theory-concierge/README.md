@@ -62,3 +62,7 @@ I wanted to build something a business could hand to its customers, not just run
 ## Access
 
 The workflow export isn't published because it contains my prompts and logic. Email me if you'd like a walkthrough: samhitatavutu@gmail.com
+
+---
+
+Samhita - Edit Theory

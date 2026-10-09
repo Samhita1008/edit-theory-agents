@@ -53,3 +53,7 @@ n8n · Groq (Llama 3.3 70B) · Supadata · Notion
 ## Why I built this
 
 Repurposing one video into 10 platform-specific posts by hand is repetitive work that automation should own. I wanted to prove the whole chain, transcript, generation, storage, could run with no manual step beyond sharing a link.
+
+---
+
+Samhita - Edit Theory

@@ -40,3 +40,7 @@ n8n · Groq (Llama 3.3 70B) · Gmail · Telegram
 ## Why I built this
 
 Triaging my inbox by hand every morning is dead time. I built this to do the sorting before I open Gmail, so opening Telegram tells me what actually needs attention today.
+
+---
+
+Samhita - Edit Theory

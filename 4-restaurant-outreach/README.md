@@ -40,3 +40,7 @@ Generic cold emails to local businesses get ignored. I wanted every pitch based 
 ## Access
 
 The workflow export isn't published because it contains my prompts and audit logic. Email me if you'd like a walkthrough: samhitatavutu@gmail.com
+
+---
+
+Samhita - Edit Theory
