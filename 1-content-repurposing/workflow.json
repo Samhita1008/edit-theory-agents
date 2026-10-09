@@ -11,8 +11,7 @@
       "typeVersion": 2.1,
       "position": [0, 0],
       "id": "bb7cddfb-f214-497d-9108-4fb56b612385",
-      "name": "Webhook",
-      "webhookId": "cf92588a-9d00-4813-ac39-09254212d2e6"
+      "name": "Webhook"
     },
     {
       "parameters": {

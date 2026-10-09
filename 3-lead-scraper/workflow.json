@@ -14,8 +14,7 @@
         0
       ],
       "id": "7b6a1106-17f4-424c-a6a1-0d624dff2945",
-      "name": "Webhook",
-      "webhookId": "de7e5f0d-62dd-43d1-881b-b70a3c599865"
+      "name": "Webhook"
     },
     {
       "parameters": {
@@ -28,8 +27,7 @@
         -80
       ],
       "id": "d9209098-417d-496d-9bf6-f83c67776118",
-      "name": "Wait",
-      "webhookId": "6a6f55ed-b154-4b9e-9899-d102672b5147"
+      "name": "Wait"
     },
     {
       "parameters": {
@@ -610,12 +608,9 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "0caa33bc-dc7c-4647-ad32-4addab1911d0",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "6512bc55ec4a656c60bd19299f2bc14900d2b3d09d156ac46be847d72c78e0c4"
+    "templateCredsSetupCompleted": true
   },
   "nodeGroups": [],
-  "id": "WS9ZVxJTJTqzJTjJ",
   "tags": []
 }

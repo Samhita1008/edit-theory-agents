@@ -37,10 +37,9 @@
       ],
       "id": "d87b5c70-4162-48a1-91c9-cef80e1f88e4",
       "name": "Get many messages",
-      "webhookId": "0167ff86-2882-4ac8-9e99-647919afce6d",
       "credentials": {
         "gmailOAuth2": {
-          "id": "CcLIIt0WgoWmr6Dp",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Gmail account"
         }
       }
@@ -79,7 +78,7 @@
       "name": "HTTP Request",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "SZcLaO9JSfMYRtuf",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Header Auth account"
         }
       }
@@ -112,7 +111,7 @@
     },
     {
       "parameters": {
-        "chatId": "7977658510",
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
         "text": "={{ $json.message }}",
         "additionalFields": {
           "appendAttribution": false
@@ -126,10 +125,9 @@
       ],
       "id": "2df5113c-e398-48bc-9ba9-79f63ffe7f3e",
       "name": "Send a text message",
-      "webhookId": "75ba308a-89ca-46ee-bfb9-d191c18e688a",
       "credentials": {
         "telegramApi": {
-          "id": "hHt86aRSiksHUQBS",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       }
@@ -210,12 +208,9 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "d577d408-2e8d-4dd2-bbd8-4b5938f18fad",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "6512bc55ec4a656c60bd19299f2bc14900d2b3d09d156ac46be847d72c78e0c4"
+    "templateCredsSetupCompleted": true
   },
   "nodeGroups": [],
-  "id": "9Izt3xU7VwLfPrf1",
   "tags": []
 }
