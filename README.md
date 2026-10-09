@@ -1,43 +1,55 @@
-# Edit Theory, Automation Agents
+# Edit Theory Agents
 
-n8n workflow files for the AI automation agents built as part of **Edit Theory**, an AI automation practice for D2C brands and local businesses, by [Samhita Tavutu](mailto:samhitatavutu@gmail.com).
+n8n automation agents I built for Edit Theory, my AI automation practice for D2C brands and local businesses. I'm Samhita, a CS student, and this repo documents what I built, how it works, and what broke along the way.
 
-**[Portfolio](https://edittheory-portfolio.vercel.app/)** · **[Concierge — Live Demo](https://edit-theory-concierge-s6ra.vercel.app)** · **[LinkedIn](https://linkedin.com/in/samhita-tavutu-b17b2a37b/)**
-
----
+[Portfolio](https://edittheory-portfolio.vercel.app/) · [Concierge demo](https://edit-theory-concierge-s6ra.vercel.app) · [LinkedIn](https://linkedin.com/in/samhita-tavutu-b17b2a37b/)
 
 ## Agents
 
-| # | Agent | Status | Workflow | Stack |
-|---|---|---|---|---|
-| 6 | [Edit Theory Concierge](./6-edit-theory-concierge) ⭐ | 🟡 Demo mode | Redacted | React, Tailwind, n8n, Groq, OpenStreetMap → Google Places (swap-ready), WhatsApp Business (swap-ready), Google Sheets, Gmail |
-| 1 | [Content Repurposing System](./1-content-repurposing) | ✅ Live workflow | [Published](./1-content-repurposing/workflow.json) | n8n, Groq, Supadata, Notion |
-| 2 | [AI Outreach System](./2-ai-outreach) | ✅ Live workflow | Redacted | n8n, Groq, Gmail, Google Sheets |
-| 3 | [Lead Discovery System](./3-lead-scraper) | ✅ Live workflow | [Published](./3-lead-scraper/workflow.json) | n8n, Groq, Apify, Google Sheets |
-| 4 | [Restaurant Outreach AI System](./4-restaurant-outreach) | ✅ Live workflow | Redacted | n8n, Groq, Gmail, Google Sheets, Telegram |
-| 5 | [Email Digest Agent](./5-email-digest) | ✅ Live workflow | [Published](./5-email-digest/workflow.json) | n8n, Groq, Gmail, Telegram |
+| # | Agent | What it does | Workflow file |
+|---|---|---|---|
+| 1 | [Content Repurposing](./1-content-repurposing) | Turns one YouTube video into 10 content assets and saves them to Notion | [Published](./1-content-repurposing/workflow.json) |
+| 2 | [AI Outreach](./2-ai-outreach) | Sends personalized cold emails, follows up on a schedule, tracks replies | Not published |
+| 3 | [Lead Discovery](./3-lead-scraper) | Finds and scores Instagram leads for a niche and drafts outreach for each | [Published](./3-lead-scraper/workflow.json) |
+| 4 | [Restaurant Outreach](./4-restaurant-outreach) | Audits restaurant websites and writes pitches based on what's wrong | Not published |
+| 5 | [Email Digest](./5-email-digest) | Sorts your inbox by urgency and sends a morning summary to Telegram | [Published](./5-email-digest/workflow.json) |
+| 6 | [Concierge](./6-edit-theory-concierge) | Booking assistant for local businesses (backend docs; frontend is a separate repo) | Not published |
 
-**Concierge** is the flagship build here, a full-stack (frontend + backend) customer-facing booking product, not an internal automation. See its README for the architecture and what's live vs. demo-mode.
+Concierge is the biggest build here: a customer-facing product with a frontend, not just an internal automation. Parts of it run in demo mode, and its README says exactly which parts.
 
-Each folder contains a README describing what the agent does and its stack. Where the "Workflow" column shows Redacted, the implementation (prompts and code) is kept private to protect proprietary logic, available on request for serious inquiries.
+## Repo layout
 
-## Stack overview
+```
+edit-theory-agents/
+├── 1-content-repurposing/    README + workflow.json
+├── 2-ai-outreach/            README
+├── 3-lead-scraper/           README + workflow.json
+├── 4-restaurant-outreach/    README
+├── 5-email-digest/           README + workflow.json
+└── 6-edit-theory-concierge/  README
+```
 
-- **Automation:** n8n
-- **AI:** Groq (Llama 3.3 70B)
-- **Integrations:** Gmail API, Google Sheets, Telegram Bot API, Apify, Supadata
+Every README covers what the agent does, how the pipeline runs, the stack, and the engineering notes: real bugs I hit and how I fixed them.
 
-## Access
+## Using a published workflow
 
-Published workflows (Agents 1, 3, 5) have credentials and API keys redacted, replace placeholder values with your own before importing. Agents 2, 4, and Concierge keep their full implementation private, available on request for serious inquiries, see contact below.
+Agents 1, 3 and 5 include a `workflow.json`. All keys and personal IDs are replaced with placeholders.
+
+1. In n8n, create a new workflow, open the menu, and choose **Import from file**.
+2. Search the workflow for `YOUR_` and replace each placeholder with your own value (listed in each agent's README).
+3. Re-select the credentials on any Gmail, Google Sheets, Notion or Telegram nodes.
+4. Run it once manually and check each node's output before activating it.
+
+Never commit real API keys to a repo. If you export your own workflow, search the JSON for keys and IDs first.
+
+## Not published
+
+Agents 2, 4 and Concierge contain prompts and logic I'm keeping private for now. Their READMEs still cover the design and the problems I solved. If you want a walkthrough, email me.
+
+## Stack
+
+n8n · Groq (Llama 3.3 70B) · Gmail · Google Sheets · Telegram · Notion · Apify · Supadata
 
 ## Contact
 
-- Email: samhitatavutu@gmail.com
-- LinkedIn: https://linkedin.com/in/samhita-tavutu-b17b2a37b/
-
----
-
-<div align="center">
-Samhita — Edit Theory
-</div>
+Email: samhitatavutu@gmail.com

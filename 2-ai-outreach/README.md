@@ -1,32 +1,39 @@
 # AI Outreach System
 
-Status: ✅ Live workflow
+Sends personalized cold emails, follows up on a schedule, and tracks replies, all from one n8n canvas.
 
-A single n8n canvas combining 3 connected workflows for automated cold outreach:
+**Status:** Working · **Workflow:** not published (see [Access](#access))
 
-1. **AI Outreach Agent**, pulls leads from Google Sheets, generates a personalized opener and cold email via Groq, and sends through Gmail.
-2. **Follow Up Sequence**, a scheduled 3-day / 7-day / 14-day follow-up cadence, checking reply status before each send and stopping the sequence once a lead responds.
-3. **Reply Tracker**, monitors Gmail for replies and updates lead status in Google Sheets accordingly.
+## What it does
+
+Three connected workflows:
+
+1. **Outreach agent:** reads leads from Google Sheets, writes a personalized opener and cold email with Groq, and sends it through Gmail.
+2. **Follow-up sequence:** sends follow-ups at 3, 7 and 14 days. It checks reply status before each send and stops once a lead responds.
+3. **Reply tracker:** watches Gmail for replies and updates each lead's status in Google Sheets.
 
 ## Pipeline
-Google Sheets (leads) → Groq (personalized opener + email) → Gmail (send)
-→ Follow-Up Sequence (3d / 7d / 14d, reply-aware, auto-stops on response)
-→ Reply Tracker (Gmail → matched to lead → Google Sheets status update)
+
+```
+Google Sheets (leads) → Groq (opener + email) → Gmail (send)
+        → Follow-up sequence (3d / 7d / 14d, stops on reply)
+        → Reply tracker (Gmail → match to lead → update Sheets status)
+```
 
 ## Stack
+
 n8n · Groq (Llama 3.3 70B) · Google Sheets · Gmail
 
-## Engineering Notes
+## Engineering notes
 
-Real problems hit while building this, not just the happy path:
-
-- **Debug code left in the production path.** After fixing an unrelated "empty item" issue on the IF node, the Match Replies Code node still had temporary debug code in it, returning a placeholder (`{ debug: 'check logs' }`) instead of the real matching logic. It ran with a clean "Success" status every time, silently doing nothing. Easy to miss because n8n doesn't distinguish "ran successfully" from "ran successfully and did the wrong thing." Fix: swapped the placeholder back for the actual matching logic, and now treat a suspiciously clean run as reason to check the node's code, not just its status.
-- **`console.log` doesn't show up in n8n's Logs panel.** Debugging the empty-match issue by watching n8n's built-in execution log got nowhere, it only shows timing, not `console.log()` output. Had to open the browser's DevTools console (F12 → Console tab) to actually see what the Code node was logging.
-- **"No matches" looked like a bug, it wasn't.** Burned a full debugging cycle checking the Gmail data, the sheet data, and the matching regex, all of which were correct. The actual issue: no real lead had replied yet, so there was nothing to match against. Lesson, confirm test data actually exists before assuming the matching logic is broken.
-
+- **Debug code left in the production path.** After fixing an unrelated issue on an IF node, the reply-matching Code node still had a placeholder (`{ debug: 'check logs' }`) instead of the real logic. It ran with a green "Success" every time and did nothing. n8n can't tell "ran" from "ran correctly", so now a suspiciously clean run makes me check the node's code, not just its status.
+- **`console.log` doesn't appear in n8n's Logs panel.** I wasted time watching the wrong place. The output shows up in the browser DevTools console (F12), not in n8n's execution log.
+- **"No matches" wasn't a bug.** I spent a full debugging cycle checking the Gmail data, the sheet and the regex, and all of them were fine. No lead had actually replied yet, so there was nothing to match. Lesson: confirm the test data exists before debugging the logic.
 
 ## Why I built this
-Cold outreach dies without consistent follow-up, and manually tracking who replied across dozens of leads doesn't scale. Built this to run the full loop, personalized first touch, a scheduled follow-up cadence that respects replies, and automatic reply tracking, without babysitting a spreadsheet every day.
+
+Cold outreach dies without follow-up, and tracking replies across dozens of leads by hand doesn't scale. I built this to run the whole loop: a personal first message, a follow-up cadence that respects replies, and automatic tracking, without checking a spreadsheet every day.
 
 ## Access
-Full n8n workflow export is not published in this repo to protect the underlying prompt engineering and implementation logic. Available on request for serious inquiries, see contact below.
+
+The workflow export isn't published because it contains my prompts and matching logic. Email me if you'd like a walkthrough: samhitatavutu@gmail.com

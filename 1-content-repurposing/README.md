@@ -1,45 +1,55 @@
 # Content Repurposing System
 
-Status: ✅ Live workflow
+Turns one YouTube video into 10 ready-to-post content assets and saves them to Notion.
 
-Turns one long-form video/podcast into 10 platform-ready content assets, automatically.
+**Status:** Working · **Workflow:** [workflow.json](./workflow.json)
 
 ## What it does
-- Trigger: paste a YouTube URL to a webhook to kick off the pipeline
-- Fetches the full transcript automatically (Supadata)
-- Groq reads the transcript and generates 10 content assets in one pass:
-  - LinkedIn carousel outline (5 slides)
-  - 3 short-form reel scripts (different angles)
-  - Full LinkedIn post
-  - Email newsletter version
-  - Standalone quote post
-  - Instagram caption
-  - X (Twitter) thread
-  - Ad concept (hook + angle + CTA)
-- Every asset is saved directly to a Notion database, one row per video, titled by the source YouTube link
-- Runs independently of any local machine once deployed, no manual step beyond sending the link
+
+You send a YouTube URL to a webhook. The system:
+
+1. Fetches the video transcript (Supadata)
+2. Sends it to Groq, which generates all 10 assets in one pass
+3. Saves everything to a Notion database, one row per video
+
+The 10 assets:
+
+- LinkedIn carousel outline (5 slides)
+- 3 short-form reel scripts, each with a different angle
+- LinkedIn post
+- Email newsletter version
+- Standalone quote post
+- Instagram caption
+- X (Twitter) thread
+- Ad concept (hook, angle, CTA)
 
 ## Pipeline
-YouTube URL → Webhook Trigger → Supadata (transcript fetch) → Groq (10-asset generation) → Notion (structured storage)
+
+```
+YouTube URL → Webhook → Supadata (transcript) → Groq (10 assets) → Notion
+```
 
 ## Stack
-n8n · Groq (Llama 3.3 70B) · Supadata (transcript extraction) · Notion · Railway (deployment)
 
-## Access
-Full n8n workflow export is published in this repo — see [`workflow.json`](./workflow.json). Credentials and API keys are redacted; replace the placeholder values with your own before importing.
+n8n · Groq (Llama 3.3 70B) · Supadata · Notion
 
-## Engineering Notes
+## Setup
 
-Real problems hit while building this, not just the happy path:
+1. Import `workflow.json` into n8n.
+2. Replace the placeholders:
+   - `YOUR_SUPADATA_API_KEY` in the transcript HTTP Request node (`x-api-key` header)
+   - `YOUR_GROQ_API_KEY` in the Groq HTTP Request node (`Authorization: Bearer ...`)
+   - `YOUR_NOTION_DATABASE_ID` in the Notion node
+3. Create a Notion database with these properties, spelled exactly like this: `Title` (title), and text properties `Carousals`, `Reelscript 1`, `Reelscript 2`, `Reelscript 3`, `LinkedIn Post`, `Newsletter`, `Quote Post`, `Instagram Caption`, `X Thread`, `Ad Concept`.
+4. Connect your Notion integration to that database page.
+5. Send a test request: `POST /webhook/content-repurpose` with body `{"youtube_url": "https://..."}`.
 
-- **Transcript shape mismatch.** The transcript API doesn't return one clean string, it returns an array of small timestamped segments (`{text, offset, duration}`). Early runs fed this straight to Groq and got garbage output. Fix: a dedicated trim/join step that concatenates `.text` from every segment into one continuous string, capped at ~12,000 characters to stay inside Groq's context window.
-- **Notion auth: OAuth vs. API Key.** The Notion node defaulted to OAuth2, which needs a Client ID/Secret, the wrong credential type for a personal integration. Fix: switch the credential type to "Notion API" (Internal Integration Token) instead, then explicitly add the integration as a connection on the target database page, page-level sharing doesn't inherit from parent pages automatically.
-- **Notion "From list" returning empty.** Even with correct auth, the Database dropdown sometimes returns no results due to how Notion's search API scopes visibility. Fix: switch to "By ID" and paste the database ID directly from the page URL, bypasses the list-search step entirely.
+## Engineering notes
 
+- **The transcript isn't a string.** The API returns an array of small timestamped segments. Feeding that straight to Groq gave garbage. Fix: a Code node joins the `text` from every segment and caps the result at about 12,000 characters to fit Groq's context window.
+- **Notion defaulted to the wrong credential type.** It offered OAuth2, which needs a Client ID and Secret. A personal integration needs the "Notion API" (internal token) credential, and the integration also has to be added as a connection on the database page. Access doesn't inherit from parent pages.
+- **The Notion database dropdown came back empty.** Even with correct auth, search sometimes returns nothing. Fix: switch the field to "By ID" and paste the database ID from the page URL.
 
 ## Why I built this
-Repurposing one video into 10 platform-specific assets by hand is the exact kind of repetitive, high-volume task automation should own. Built this to prove an end-to-end pipeline, transcript extraction, multi-format generation in one AI pass, structured storage, could run with zero manual steps beyond sharing a link.
 
-## Contact
-- Email: samhitatavutu@gmail.com
-
+Repurposing one video into 10 platform-specific posts by hand is repetitive work that automation should own. I wanted to prove the whole chain, transcript, generation, storage, could run with no manual step beyond sharing a link.

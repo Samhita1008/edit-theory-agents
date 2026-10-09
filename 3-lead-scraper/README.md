@@ -1,42 +1,55 @@
 # Lead Discovery System
 
-Status: ✅ Live workflow
+Finds Instagram leads for a niche, scores them, and drafts a personalized cold email for each one.
 
-Finds and qualifies Instagram leads by niche automatically, from hashtag generation to a scored, personalized outreach draft ready to send.
+**Status:** Working · **Workflow:** [workflow.json](./workflow.json)
 
 ## What it does
-- Trigger: webhook accepts a niche as input
-- Groq generates 5 relevant Instagram hashtags for that niche
-- Apify scrapes Instagram by hashtag to pull matching creator profiles
-- Leads are deduplicated and filtered by follower count
-- Groq scores each lead and detects their language
-- Groq generates a personalized opener + cold email per qualified lead
-- Every lead is appended to Google Sheets, ready for the Outreach System (Agent 2) to pick up
+
+You send a niche and a follower range to a webhook. The system:
+
+1. Generates 5 relevant Instagram hashtags (Groq)
+2. Scrapes creators posting under those hashtags (Apify)
+3. Removes duplicates and filters by follower count
+4. Scores each lead and detects their language (Groq)
+5. Writes a personalized opener and cold email per lead (Groq)
+6. Appends every lead to Google Sheets, ready for the [Outreach System](../2-ai-outreach) to pick up
 
 ## Pipeline
-Webhook (niche input) → Groq (hashtag generation) → Apify (Instagram scrape by hashtag)
-→ Deduplicate + Filter (by followers) → Groq (score lead + detect language)
-→ Groq (personalized opener + cold email) → Google Sheets (append lead)
+
+```
+Webhook (niche) → Groq (hashtags) → Apify (Instagram scrape) → Dedupe + follower filter
+→ Groq (score + language) → Groq (opener + email) → Google Sheets
+```
 
 ## Stack
+
 n8n · Groq (Llama 3.3 70B) · Apify (Instagram Hashtag Scraper) · Google Sheets
 
+## Setup
+
+1. Import `workflow.json` into n8n.
+2. Replace the placeholders:
+   - `YOUR_GROQ_API_KEY` in each Groq HTTP Request node
+   - `YOUR_APIFY_TOKEN` in the Apify HTTP Request node URL
+   - `YOUR_SHEET_ID` in the Google Sheets node, and connect your Google credential
+3. Make a sheet with these columns: `Name`, `Platform`, `Niche`, `Profile URL`, `Recent post topic`, `Generated Opener`, `Full Cold Email`, `Status`, `Lead Score`.
+4. Send a test request: `POST /webhook/scrape-leads` with body `{"niche": "fitness", "min_followers": 1000, "max_followers": 50000}`.
+
+Apify's free tier has limited credits, so test with small follower ranges and avoid unnecessary reruns.
+
+## Engineering notes
+
+- **Groq wrapped its JSON in Markdown fences.** This broke `JSON.parse()` on every run. Fix: strip the fences before parsing, on every Groq response.
+- **Apify rejects `#` in hashtags.** The scraper wants a bare string. Fix: strip the `#` before sending.
+- **Apify's first response is only run metadata.** The leads live in a separate dataset, fetched using the `defaultDatasetId` from that first response. I initially tried to parse leads out of the trigger response.
+- **HTTP Request nodes overwrote my lead data.** n8n replaces the item with the raw API response, so the sheet ended up with only AI-generated fields. Fix: re-merge the original lead fields after each HTTP node, and give every Groq prompt the full lead context.
+- **Waiting for Apify is a fixed delay, not a real completion check.** Scrape time varies, so a fixed wait can fire too early or wait too long. A known tradeoff that I haven't fully solved.
+- **Renaming a node broke references silently.** Expressions like `$('Extract Dataset ID')` need the exact node name. Fix: rename carefully and recheck downstream expressions.
+- **The same creator showed up under several hashtags.** Fix: deduplicate by username before scoring.
+- **Filtering moved before the AI step.** Leads outside the follower range used to reach Groq anyway. Filtering first cuts API usage and protects the free-tier credits.
+- **Input validation up front.** A `Validate Input` node checks the required fields before any API call, so a bad request doesn't burn Apify or Groq calls.
+
 ## Why I built this
-Manually searching Instagram by hashtag and copy-pasting profiles into a sheet doesn't scale past a handful of leads. Built this to turn a single niche into a scored, qualified, ready-to-contact lead list automatically, feeding directly into Agent 2 so the whole pipeline from discovery to outreach runs without a manual handoff in between.
 
-## Engineering Notes
-
-Real problems hit while building this, not just the happy path:
-
-- **Groq wrapping JSON in Markdown fences.** Both the hashtag generation and lead-scoring calls came back wrapped in ```json fences, breaking `JSON.parse()` on every run. Fix: strip the fences before parsing, applied consistently across every Groq response in this workflow.
-- **Apify rejects `#` in hashtag input.** The Instagram Hashtag Scraper's API expects a bare hashtag string, not the leading `#`. Fix: sanitize every hashtag (strip the `#`) before it's sent to Apify.
-- **HTTP Request nodes overwrote the original lead data, repeatedly.** Same root issue as Agent 4/5: n8n's HTTP Request node replaces `item.json` with the raw API response, dropping whatever came in. Here it hit twice, first Google Sheets ended up with only AI-generated fields because the original lead data (name, username, followers) had been silently overwritten by the Groq response before it reached the sheet. Fix: manually re-merge the original lead fields back in after every HTTP Request node, and make sure each Groq prompt carries the *complete* lead context itself (name, username, followers, topic) rather than relying on fields surviving the trip through multiple HTTP nodes.
-- **Apify's first response is just run metadata, not the scraped leads.** Calling the scraper API returns a run object with a `defaultDatasetId`, the actual leads have to be fetched separately from that dataset. Missed this at first and tried to parse leads straight out of the run-trigger response.
-- **A fixed 90-second Wait was unreliable.** Apify's scrape completion time varies run to run, so a hardcoded wait either fired too early (empty results) or wasted time waiting longer than necessary. Still a fixed delay rather than a true completion check, a known tradeoff, not fully solved.
-- **Node reference errors from renaming nodes.** n8n expressions like `$('Extract Dataset ID')` require the exact, case-sensitive node name, renaming a node without updating every downstream reference broke the chain silently until run.
-- **Duplicate leads across hashtags.** The same Instagram creator often showed up under multiple related hashtags. Fix: deduplicate by username before scoring, so the same lead doesn't get scored and drafted twice.
-- **Follower filtering moved before AI enrichment.** Originally every scraped lead went through Groq scoring regardless of follower count. Moved the follower filter earlier in the pipeline so leads that don't qualify never reach Groq, cuts API usage and matters on Apify's free-tier credit limits, which required testing carefully and avoiding unnecessary reruns.
-- **Webhook validation added up front.** A `Validate Input` code node checks required fields exist before any API call fires, so a malformed or incomplete trigger doesn't burn Apify/Groq calls for nothing.
-
-## Access
-Full n8n workflow export is published in this repo — see [`workflow.json`](./workflow.json). Credentials and API keys are redacted; replace the placeholder values with your own before importing.
+Searching Instagram by hashtag and pasting profiles into a sheet doesn't scale past a handful of leads. I built this to turn one niche into a scored, ready-to-contact lead list, feeding straight into the outreach system with no manual handoff.

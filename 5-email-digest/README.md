@@ -1,36 +1,42 @@
 # Email Digest Agent
 
-Status: ✅ Live workflow
+Sorts your inbox by urgency every morning and sends one short summary to Telegram.
 
-Triages your inbox every morning before you open Gmail, categorizes each email by urgency and delivers a single clean summary to Telegram.
+**Status:** Working · **Workflow:** [workflow.json](./workflow.json)
 
 ## What it does
-- Pulls every email from the last 24 hours (not just unread)
-- Filters out newsletter/promo noise before it hits the AI, to save tokens and keep signal clean
-- Groq categorizes each email: 🔴 needs reply today, 🟡 FYI, 🟢 can wait
-- Writes a one-line summary per email, not the full thread
-- Sends one sorted, formatted digest to Telegram every morning
+
+- Pulls every email from the last 24 hours, read or unread
+- Filters out newsletters and promo mail before the AI sees it, which saves tokens
+- Groq rates each email: 🔴 needs a reply today, 🟡 FYI, 🟢 can wait
+- Writes a one-line summary per email instead of reproducing the thread
+- Sends one sorted digest to Telegram at 7am
 
 ## Pipeline
-Gmail (last 24h) → Noise Filter (strip newsletters/promo) → Groq (categorize + one-line summary) → Telegram (digest)
+
+```
+Gmail (last 24h) → Noise filter → Groq (priority + summary) → Telegram digest
+```
 
 ## Stack
+
 n8n · Groq (Llama 3.3 70B) · Gmail · Telegram
 
-## File
-`workflow.json`, full n8n export, import directly into your own n8n instance to inspect or run.
+## Setup
 
-## Engineering Notes
+1. Import `workflow.json` into n8n.
+2. Connect your Gmail (OAuth) and Telegram bot credentials.
+3. Create a Header Auth credential for Groq (`Authorization: Bearer YOUR_GROQ_API_KEY`) and select it on the HTTP Request node.
+4. Replace `YOUR_TELEGRAM_CHAT_ID` in the Telegram node with your own chat ID.
+5. Adjust the schedule if you don't want 7am (the cron expression is `0 7 * * *`).
+6. Run it once manually and check the output before activating.
 
-**Sender/subject data silently dropped after the HTTP Request node.** n8n's HTTP Request node replaces `item.json` with the raw API response, discarding the original Gmail fields (`From`, `Subject`) that came in. First fix attempt (indexing back into the original Gmail items by array position `[i]`) broke once the AI responses came back in a different order than the input, sender names ended up paired with the wrong email. Real fix: rebuilt the AI call as a single Code node with a `for` loop, calling the API directly via `this.helpers.httpRequest()` inside the same iteration as the original item, guarantees correct pairing since there's no separate node boundary for order to get lost across.
+## Engineering notes
 
-**Gmail field capitalization.** The Gmail node returns `From` and `Subject` capitalized, a lowercase `from` filter silently matched nothing and let all emails through unfiltered, with no error thrown. Caught by inspecting one raw output item directly rather than trusting the filter "ran successfully."
-
-**JSON body field rejecting a valid expression.** The HTTP Request node's body needs "Specify Body" explicitly set to "Using JSON" (not "Using Fields Below") before an expression-mode `JSON.stringify(...)` body will actually evaluate, otherwise n8n validates the literal unrendered text and rejects it as invalid JSON.
-
+- **Sender and subject got lost after the HTTP Request node.** n8n replaces the item with the raw API response, dropping the original Gmail fields. My first fix matched items back by array position, which broke when the AI responses came back in a different order, and senders ended up paired with the wrong summaries. Real fix: one Code node with a `for` loop that calls the API inside the same iteration as the original email, so the pairing can't get lost between nodes.
+- **Gmail returns `From` and `Subject` capitalized.** My lowercase `from` filter matched nothing and let every email through, with no error. I only caught it by inspecting one raw output item instead of trusting that the filter "ran".
+- **The JSON body field rejected a valid expression.** The HTTP Request node needs "Specify Body" set to "Using JSON" before an expression-mode `JSON.stringify(...)` body evaluates. Otherwise n8n validates the raw text and calls it invalid JSON.
 
 ## Why I built this
-Opening Gmail and triaging everything manually every morning is dead time. Built this to do the sorting before I even open the inbox, filter the noise, categorize by urgency, summarize in one line, so opening Telegram tells me what actually needs attention today.
 
-## Contact
-- Email: samhitatavutu@gmail.com
+Triaging my inbox by hand every morning is dead time. I built this to do the sorting before I open Gmail, so opening Telegram tells me what actually needs attention today.
