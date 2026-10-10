@@ -14,6 +14,7 @@ n8n automation agents I built for Edit Theory, my AI automation practice for D2C
 | 4 | [Restaurant Outreach](./4-restaurant-outreach) | Audits restaurant websites and writes pitches based on what's wrong | Not published |
 | 5 | [Email Digest](./5-email-digest) | Sorts your inbox by urgency and sends a morning summary to Telegram | [Published](./5-email-digest/workflow.json) |
 | 6 | [Concierge](./6-edit-theory-concierge) | Booking assistant for local businesses (backend docs; frontend is a separate repo) | Not published |
+| 7 | [RWA Complaint and Vendor Coordination](./7-rwa-society-agent) | Runs complaints, vendor dispatch, resolution tracking and notices for an apartment society over Telegram, with secretary approval | Not published |
 
 Concierge is the biggest build here: a customer-facing product with a frontend, not just an internal automation. Parts of it run in demo mode, and its README says exactly which parts.
 
@@ -26,7 +27,8 @@ edit-theory-agents/
 ├── 3-lead-scraper/           README + workflow.json
 ├── 4-restaurant-outreach/    README
 ├── 5-email-digest/           README + workflow.json
-└── 6-edit-theory-concierge/  README
+├── 6-edit-theory-concierge/  README
+└── 7-rwa-society-agent/      README
 ```
 
 Every README covers what the agent does, how the pipeline runs, the stack, and the engineering notes: real bugs I hit and how I fixed them.
@@ -44,7 +46,7 @@ Never commit real API keys to a repo. If you export your own workflow, search th
 
 ## Not published
 
-Agents 2, 4 and Concierge contain prompts and logic I'm keeping private for now. Their READMEs still cover the design and the problems I solved. If you want a walkthrough, email me.
+Agents 2, 4, 7 and Concierge contain prompts and logic I'm keeping private for now. Their READMEs still cover the design and the problems I solved. If you want a walkthrough, email me.
 
 ## Stack
 
