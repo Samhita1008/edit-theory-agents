@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-label="What goes in and what comes out of each agent">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5CF2B0"/></marker>
+    <style>
+      .t{font-family:'Segoe UI',Helvetica,Arial,sans-serif;fill:#F2F7F4;font-size:15px;font-weight:600}
+      .s{font-family:'Segoe UI',Helvetica,Arial,sans-serif;fill:#8FA89C;font-size:13px}
+      .n{font-family:'SF Mono',Menlo,Consolas,monospace;fill:#5CF2B0;font-size:12px;letter-spacing:2px}
+      .b{fill:#0d1713;stroke:#2a4a3b;stroke-width:1.2}
+      .h{fill:#0f2219;stroke:#5CF2B0;stroke-width:1.2}
+      .ar{stroke:#5CF2B0;stroke-width:1.8;fill:none;marker-end:url(#a)}
+    </style>
+  </defs>
+  <rect width="1200" height="600" rx="16" fill="#070b09"/>
+  <text x="40" y="42" class="n">IN  →  AGENT  →  OUT</text>
+
+  <!-- rows -->
+  <g transform="translate(40,60)">
+    <!-- 1 -->
+    <rect x="0" y="0" width="340" height="56" rx="8" class="b"/><text x="16" y="24" class="t">01 Content Repurposing</text><text x="16" y="44" class="s">YouTube URL to a webhook</text>
+    <path d="M345 28H420" class="ar"/>
+    <rect x="425" y="0" width="150" height="56" rx="8" class="h"/><text x="500" y="33" text-anchor="middle" class="t">Groq</text>
+    <path d="M580 28H655" class="ar"/>
+    <rect x="660" y="0" width="460" height="56" rx="8" class="b"/><text x="676" y="24" class="t">10 content assets</text><text x="676" y="44" class="s">One Notion row per video</text>
+    <!-- 2 -->
+    <rect x="0" y="72" width="340" height="56" rx="8" class="b"/><text x="16" y="96" class="t">02 AI Outreach</text><text x="16" y="116" class="s">Leads in Google Sheets</text>
+    <path d="M345 100H420" class="ar"/>
+    <rect x="425" y="72" width="150" height="56" rx="8" class="h"/><text x="500" y="105" text-anchor="middle" class="t">Groq</text>
+    <path d="M580 100H655" class="ar"/>
+    <rect x="660" y="72" width="460" height="56" rx="8" class="b"/><text x="676" y="96" class="t">Cold email, follow-ups at 3, 7, 14 days</text><text x="676" y="116" class="s">Stops when a lead replies</text>
+    <!-- 3 -->
+    <rect x="0" y="144" width="340" height="56" rx="8" class="b"/><text x="16" y="168" class="t">03 Lead Discovery</text><text x="16" y="188" class="s">Niche and follower range to a webhook</text>
+    <path d="M345 172H420" class="ar"/>
+    <rect x="425" y="144" width="150" height="56" rx="8" class="h"/><text x="500" y="177" text-anchor="middle" class="t">Apify + Groq</text>
+    <path d="M580 172H655" class="ar"/>
+    <rect x="660" y="144" width="460" height="56" rx="8" class="b"/><text x="676" y="168" class="t">Scored leads with a draft email each</text><text x="676" y="188" class="s">Deduplicated and follower-filtered</text>
+    <!-- 4 -->
+    <rect x="0" y="216" width="340" height="56" rx="8" class="b"/><text x="16" y="240" class="t">04 Restaurant Outreach</text><text x="16" y="260" class="s">Restaurant leads and their websites</text>
+    <path d="M345 244H420" class="ar"/>
+    <rect x="425" y="216" width="150" height="56" rx="8" class="h"/><text x="500" y="249" text-anchor="middle" class="t">Groq audit</text>
+    <path d="M580 244H655" class="ar"/>
+    <rect x="660" y="216" width="460" height="56" rx="8" class="b"/><text x="676" y="240" class="t">Pitch about what is actually wrong</text><text x="676" y="260" class="s">Human approves before send, Telegram alert on warm replies</text>
+    <!-- 5 -->
+    <rect x="0" y="288" width="340" height="56" rx="8" class="b"/><text x="16" y="312" class="t">05 Email Digest</text><text x="16" y="332" class="s">Last 24 hours of Gmail</text>
+    <path d="M345 316H420" class="ar"/>
+    <rect x="425" y="288" width="150" height="56" rx="8" class="h"/><text x="500" y="321" text-anchor="middle" class="t">Groq</text>
+    <path d="M580 316H655" class="ar"/>
+    <rect x="660" y="288" width="460" height="56" rx="8" class="b"/><text x="676" y="312" class="t">One urgency-sorted digest at 7am</text><text x="676" y="332" class="s">Noise filtered before the AI sees it</text>
+    <!-- 6 -->
+    <rect x="0" y="360" width="340" height="56" rx="8" class="b"/><text x="16" y="384" class="t">06 Concierge</text><text x="16" y="404" class="s">Customer search and booking</text>
+    <path d="M345 388H420" class="ar"/>
+    <rect x="425" y="360" width="150" height="56" rx="8" class="h"/><text x="500" y="393" text-anchor="middle" class="t">Groq + OSM</text>
+    <path d="M580 388H655" class="ar"/>
+    <rect x="660" y="360" width="460" height="56" rx="8" class="b"/><text x="676" y="384" class="t">Booking logged, status polled, email sent</text><text x="676" y="404" class="s">Venue contact simulated in demo mode</text>
+    <!-- 7 -->
+    <rect x="0" y="432" width="340" height="56" rx="8" class="b"/><text x="16" y="456" class="t">07 RWA Complaint and Vendor</text><text x="16" y="476" class="s">Resident messages on Telegram</text>
+    <path d="M345 460H420" class="ar"/>
+    <rect x="425" y="432" width="150" height="56" rx="8" class="h"/><text x="500" y="465" text-anchor="middle" class="t">Groq</text>
+    <path d="M580 460H655" class="ar"/>
+    <rect x="660" y="432" width="460" height="56" rx="8" class="b"/><text x="676" y="456" class="t">Ticket, vendor dispatch, resolution, notices</text><text x="676" y="476" class="s">Secretary approves every outbound message</text>
+  </g>
+  <text x="40" y="580" class="s">Common spine: n8n orchestration, Groq (llama-3.3-70b-versatile), Google Sheets as the record.</text>
+</svg>
