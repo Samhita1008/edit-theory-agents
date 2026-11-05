@@ -4,10 +4,10 @@
 
 <br/>
 
-![n8n](https://img.shields.io/badge/n8n-0F3D3A?style=for-the-badge&labelColor=6C151E&logo=n8n&logoColor=F5DABF)
-![Groq](https://img.shields.io/badge/Groq-llama--3.3--70b-0F3D3A?style=for-the-badge&labelColor=6C151E)
-![Agents](https://img.shields.io/badge/agents-8-0F3D3A?style=for-the-badge&labelColor=6C151E)
-![Workflows](https://img.shields.io/badge/importable%20workflows-4-0F3D3A?style=for-the-badge&labelColor=6C151E)
+![n8n](https://img.shields.io/badge/n8n-6C151E?style=for-the-badge&labelColor=6C151E&logo=n8n&logoColor=F5DABF)
+![Groq](https://img.shields.io/badge/Groq-llama--3.3--70b-6C151E?style=for-the-badge&labelColor=6C151E)
+![Agents](https://img.shields.io/badge/agents-8-6C151E?style=for-the-badge&labelColor=6C151E)
+![Workflows](https://img.shields.io/badge/importable%20workflows-4-6C151E?style=for-the-badge&labelColor=6C151E)
 
 **Eight n8n builds for [Edit Theory](https://github.com/Samhita1008), my AI automation practice for D2C brands and local businesses.**  
 Each one documents what it does, how the pipeline runs, and what broke while I built it.
