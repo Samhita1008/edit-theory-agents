@@ -1,3 +1,5 @@
+<img src="./header.svg" alt="" width="100%" />
+
 # AI Outreach System
 
 Sends personalized cold emails, follows up on a schedule, and tracks replies, all from one n8n canvas.

@@ -1,3 +1,5 @@
+<img src="./header.svg" alt="" width="100%" />
+
 # Content Repurposing System
 
 Turns one YouTube video into 10 ready-to-post content assets and saves them to Notion.

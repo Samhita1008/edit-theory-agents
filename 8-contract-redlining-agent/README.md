@@ -1,3 +1,5 @@
+<img src="./header.svg" alt="" width="100%" />
+
 # Contract Redlining and Legal Risk Review Agent
 
 An n8n workflow that reviews a contract clause by clause against a company playbook, scores the risk, and sends it to counsel for approval. Nothing goes to the counterparty.

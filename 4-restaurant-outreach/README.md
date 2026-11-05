@@ -1,3 +1,5 @@
+<img src="./header.svg" alt="" width="100%" />
+
 # Restaurant Outreach AI System
 
 Audits a restaurant's website, writes a pitch based on what's actually wrong with it, and tracks replies. A human approves every email before it goes out.

@@ -1,3 +1,5 @@
+<img src="./header.svg" alt="" width="100%" />
+
 # Lead Discovery System
 
 Finds Instagram leads for a niche, scores them, and drafts a personalized cold email for each one.

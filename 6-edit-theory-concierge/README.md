@@ -1,3 +1,5 @@
+<img src="./header.svg" alt="" width="100%" />
+
 # Edit Theory Concierge (Backend)
 
 A booking assistant for local businesses: restaurants, gyms, salons, parlours and travel agencies. It finds a venue, takes a booking and follows up automatically.

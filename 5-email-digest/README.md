@@ -1,3 +1,5 @@
+<img src="./header.svg" alt="" width="100%" />
+
 # Email Digest Agent
 
 Sorts your inbox by urgency every morning and sends one short summary to Telegram.

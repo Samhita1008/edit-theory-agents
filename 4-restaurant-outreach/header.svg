@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 170" width="1200" height="170" role="img" aria-label="Agent 4: Restaurant Outreach"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6C151E"/><stop offset="1" stop-color="#34090f"/></linearGradient>
+<pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.1" fill="#F5DABF" fill-opacity=".09"/></pattern>
+<clipPath id="panelclip"><polygon points="840,0 1200,0 1200,170 768,170"/></clipPath><style>
+.k{font-family:'SF Mono',Menlo,Consolas,monospace;fill:#F5DABF;opacity:.75;letter-spacing:4px}
+.t{font-family:Georgia,'Times New Roman',serif;fill:#F5DABF;font-weight:700}
+.s{font-family:'Segoe UI',Helvetica,Arial,sans-serif;fill:#d4b49b}
+.rise{animation:r 1s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.15s}.d2{animation-delay:.3s}.d3{animation-delay:.45s}
+@keyframes r{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.flow{stroke-dasharray:6 8;animation:f 2.2s linear infinite}
+@keyframes f{to{stroke-dashoffset:-28}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:p 3.2s ease-in-out infinite}
+@keyframes p{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.14);opacity:1}}
+.blink{animation:b 1.2s steps(1) infinite}@keyframes b{50%{opacity:0}}
+.drift{animation:dr 14s ease-in-out infinite alternate}@keyframes dr{to{transform:translate(-14px,8px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></defs><rect width="1200" height="170" rx="14" fill="url(#bg)"/><rect width="1200" height="170" rx="14" fill="url(#dots)"/><g clip-path="url(#panelclip)"><rect width="1200" height="170" fill="#0F3D3A"/></g><g class="drift" transform="scale(.62)"><g transform="translate(1509.6774193548388,75.09677419354838) scale(1)" fill="none" stroke="#F5DABF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="40" width="80" height="56" rx="8"/><rect x="150" y="40" width="80" height="56" rx="8" fill="#F5DABF" fill-opacity=".16" class="pulse"/><rect x="300" y="40" width="80" height="56" rx="8"/><path class="flow" d="M82 68H148M232 68H298" stroke-opacity=".7"/><path class="flow" d="M190 40V6H40V38" stroke-opacity=".35"/></g></g><text x="48" y="54" class="k rise" font-size="14">AGENT 04</text><text x="48" y="108" class="t rise d1" font-size="42">Restaurant Outreach</text><text x="48" y="142" class="s rise d2" font-size="17">Working · workflow not published</text></svg>

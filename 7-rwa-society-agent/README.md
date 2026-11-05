@@ -1,3 +1,5 @@
+<img src="./header.svg" alt="" width="100%" />
+
 # RWA Complaint and Vendor Coordination Agent
 
 An n8n system that runs the complaint-to-resolution loop for an Indian apartment society (RWA) over Telegram, with the secretary approving everything that goes outside the building.
