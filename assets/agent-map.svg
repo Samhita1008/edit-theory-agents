@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-label="What goes in and what comes out of each agent">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680" role="img" aria-label="What goes in and what comes out of each agent">
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#F5DABF"/></marker>
     <style>
@@ -10,7 +10,7 @@
       .ar{stroke:#F5DABF;stroke-width:1.8;fill:none;marker-end:url(#a)}
     </style>
   </defs>
-  <rect width="1200" height="600" rx="16" fill="#6C151E"/>
+  <rect width="1200" height="680" rx="16" fill="#6C151E"/>
   <text x="40" y="42" class="n">IN  →  AGENT  →  OUT</text>
 
   <!-- rows -->
@@ -57,6 +57,12 @@
     <rect x="425" y="432" width="150" height="56" rx="8" class="h"/><text x="500" y="465" text-anchor="middle" class="t">Groq</text>
     <path d="M580 460H655" class="ar"/>
     <rect x="660" y="432" width="460" height="56" rx="8" class="b"/><text x="676" y="456" class="t">Ticket, vendor dispatch, resolution, notices</text><text x="676" y="476" class="s">Secretary approves every outbound message</text>
+    <!-- 8 -->
+    <rect x="0" y="504" width="340" height="56" rx="8" class="b"/><text x="16" y="528" class="t">08 Contract Redlining</text><text x="16" y="548" class="s">Contract text plus a playbook</text>
+    <path d="M345 532H420" class="ar"/>
+    <rect x="425" y="504" width="150" height="56" rx="8" class="h"/><text x="500" y="537" text-anchor="middle" class="t">Groq</text>
+    <path d="M580 532H655" class="ar"/>
+    <rect x="660" y="504" width="460" height="56" rx="8" class="b"/><text x="676" y="528" class="t">Risk-scored redline report for counsel</text><text x="676" y="548" class="s">Counsel approves before anything is sent</text>
   </g>
-  <text x="40" y="580" class="s">Common spine: n8n orchestration, Groq (llama-3.3-70b-versatile), Google Sheets as the record.</text>
+  <text x="40" y="650" class="s">Common spine: n8n orchestration, Groq (llama-3.3-70b-versatile), Google Sheets as the record.</text>
 </svg>
