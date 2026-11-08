@@ -38,6 +38,8 @@ Each one documents what it does, how the pipeline runs, and what broke while I b
 | 8 | [Contract Redlining](./8-contract-redlining-agent) | Reviews contracts clause by clause against a playbook, scores risk, and routes to counsel for approval. Outcome-based fee booked only after sign-off | [Published](./8-contract-redlining-agent/workflow.json) |
 
 > **Start with Concierge.** It is the biggest build here: a customer-facing product with a frontend, not just an internal automation. Parts of it run in demo mode, and its README says exactly which parts.
+>
+> **For lead follow-up and outreach**, read [AI Outreach](./2-ai-outreach) and [Restaurant Outreach](./4-restaurant-outreach). Both publish a full workflow you can import.
 
 ## Why read these
 
