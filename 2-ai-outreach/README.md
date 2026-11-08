@@ -4,7 +4,7 @@
 
 Sends personalized cold emails, follows up on a schedule, and tracks replies, all from one n8n canvas.
 
-**Status:** Working · **Workflow:** not published (see [Access](#access))
+**Status:** Working · **Workflow:** [workflow.json](./workflow.json)
 
 ## What it does
 
@@ -36,9 +36,17 @@ n8n · Groq (Llama 3.3 70B) · Google Sheets · Gmail
 
 Cold outreach dies without follow-up, and tracking replies across dozens of leads by hand doesn't scale. I built this to run the whole loop: a personal first message, a follow-up cadence that respects replies, and automatic tracking, without checking a spreadsheet every day.
 
-## Access
+## Setup
 
-The workflow export isn't published because it contains my prompts and matching logic. Email me if you'd like a walkthrough: samhitatavutu@gmail.com
+1. Import `workflow.json` into n8n.
+2. Replace each placeholder with your own value:
+   - `YOUR_GROQ_API_KEY` in the four Groq HTTP Request nodes (`Authorization: Bearer ...`)
+   - `YOUR_SHEET_ID` in every Google Sheets node (or re-select your sheet from the list)
+3. Re-select credentials on the Gmail and Google Sheets nodes.
+4. The `Send a message` node is disabled in the export. Run the flow and check the drafts in the sheet first, then enable it.
+5. Edit the brand name and prompt text in the Groq nodes to match your own offer.
+
+The sheet needs these columns: Name, Platform, Niche, Followers, Recent post topic, Email, Generated Opener, Full Cold Email, Date Sent, Status.
 
 ---
 

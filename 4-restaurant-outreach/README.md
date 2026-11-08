@@ -4,7 +4,7 @@
 
 Audits a restaurant's website, writes a pitch based on what's actually wrong with it, and tracks replies. A human approves every email before it goes out.
 
-**Status:** Working · **Workflow:** not published (see [Access](#access))
+**Status:** Working · **Workflow:** [workflow.json](./workflow.json)
 
 ## What it does
 
@@ -39,9 +39,17 @@ n8n · Groq (Llama 3.3 70B) · Google Sheets · Gmail · Telegram
 
 Generic cold emails to local businesses get ignored. I wanted every pitch based on something real, an audit of the restaurant's own site, so it reads like someone actually looked. I kept the human review step because outreach to local businesses is about relationships, and I don't want an automation sending things I haven't read.
 
-## Access
+## Setup
 
-The workflow export isn't published because it contains my prompts and audit logic. Email me if you'd like a walkthrough: samhitatavutu@gmail.com
+The export holds all three workflows on one canvas: lead draft generation, human review and sending, and reply tracking.
+
+1. Import `workflow.json` into n8n.
+2. Replace each placeholder with your own value:
+   - `YOUR_SHEET_ID` in the Config nodes and the Google Sheets nodes
+   - `YOUR_TELEGRAM_CHAT_ID` in the Config node used by the Telegram alert
+3. Re-select credentials on the Gmail, Google Sheets, Telegram and Groq nodes.
+4. Check that your sheet has the columns the nodes write to: Restaurant Name, Email, Website URL, Website Status, Website Quality, Problems Found, Email Draft, Feedback, Status, Last Contacted, Emails Sent, Contact Stage, Reply Classification, Row ID. `Row ID` should be a `=ROW()` formula.
+5. Run each workflow once manually and check every node's output before activating anything that sends email.
 
 ---
 
