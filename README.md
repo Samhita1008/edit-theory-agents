@@ -69,14 +69,14 @@ Agents 6 and 7 (Concierge and the RWA agent) are kept private for now. Their REA
 
 ```
 edit-theory-agents/
-├── assets/                   banner and overview diagram
-├── 1-content-repurposing/    README + workflow.json
-├── 2-ai-outreach/            README + workflow.json
-├── 3-lead-scraper/           README + workflow.json
-├── 4-restaurant-outreach/    README + workflow.json
-├── 5-email-digest/           README + workflow.json
-├── 6-edit-theory-concierge/  README
-├── 7-rwa-society-agent/      README
+├── assets/                     banner and overview diagram
+├── 1-content-repurposing/      README + workflow.json
+├── 2-ai-outreach/              README + workflow.json
+├── 3-lead-scraper/             README + workflow.json
+├── 4-restaurant-outreach/      README + workflow.json
+├── 5-email-digest/             README + workflow.json
+├── 6-edit-theory-concierge/    README
+├── 7-rwa-society-agent/        README
 └── 8-contract-redlining-agent/ README + workflow.json
 ```
 
