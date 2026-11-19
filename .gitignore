@@ -1,0 +1,16 @@
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+
+# Local n8n exports (publish only the sanitized workflow.json per agent)
+*.local.json
+*-with-creds.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
